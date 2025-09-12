@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kings Predicciones - Planes Exclusivos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #800020; /* vinotinto */
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+            font-weight: bold;
+        }
+        h1 {
+            text-align: center;
+            color: #f9d342;
+            margin-bottom: 30px;
+            user-select: none;
+            font-weight: bold;
+        }
+        nav {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            user-select: none;
+            font-weight: bold;
+        }
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        nav ul li {
+            margin: 0 15px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #f9d342;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+        nav ul li:hover, nav ul li.active {
+            color: #fff;
+            text-decoration: underline;
+        }
+        section {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            margin: 20px auto;
+            max-width: 600px;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            user-select: none;
+            font-weight: bold;
+        }
+        section:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        section.collapsed > .content {
+            display: none;
+        }
+        h2 {
+            color: #f9d342;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+        }
+        h2 .toggle-icon {
+            font-weight: bold;
+            font-size: 1.3em;
+            user-select: none;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        ul li {
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        .plan-elite {
+            border-left: 5px solid gold;
+            padding-left: 15px;
+        }
+        .plan-diamante {
+            border-left: 5px solid #b9f2ff;
+            padding-left: 15px;
+        }
+        .plan-premium {
+            border-left: 5px solid #f39c12;
+            padding-left: 15px;
+        }
+        .payment-contact {
+            text-align: center;
+            font-size: 1.1em;
+            background-color: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            user-select: text;
+            cursor: default;
+            font-weight: bold;
+        }
+        a {
+            color: #f9d342;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .pick-del-dia {
+            text-align: center;
+            margin-top: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            user-select: none;
+            font-weight: bold;
+        }
+        /* Hidden by default for sections */
+        #victory-section, #combination-section {
+            display: none;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            padding: 20px;
+            user-select: none;
+            white-space: pre-line;
+            font-size: 1.1em;
+            line-height: 1.5em;
+            font-weight: bold;
+        }
+        #plans-section {
+            max-width: 600px;
+            margin: 20px auto;
+            font-weight: bold;
+        }
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .payment-method {
+            color: #f9d342;
+            font-weight: bold;
+            cursor: pointer;
+            user-select: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: rgba(249, 211, 66, 0.15);
+            transition: background-color 0.3s ease;
+        }
+        .payment-method:hover {
+            background-color: rgba(249, 211, 66, 0.35);
+        }
+        .payment-info {
+            background-color: rgba(249, 211, 66, 0.15);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+            color: #222;
+            font-weight: bold;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            user-select: text;
+            white-space: normal;
+            display: none;
+        }
+        .payment-info.active {
+            display: block;
+        }
+        .payment-info strong {
+            color: #800020;
+            font-weight: bold;
+        }
+        /* New highlighted link section */
+        .highlight-link {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #fffb00;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #800020;
+            box-shadow: 0 0 15px #fffb00;
+            user-select: none;
+        }
+        .highlight-link a {
+            color: #800020;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        .highlight-link a:hover {
+            color: #5a0014;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Kings Predicciones</h1>
+
+    <nav>
+        <ul>
+            <li class="active" data-target="plans-section">Planes</li>
+            <li data-target="victory-section">Nuestra victoria de ayer</li>
+            <li data-target="combination-section">Combinación de hoy</li>
+        </ul>
+    </nav>
+
+    <section id="plans-section">
+
+        <section class="plan-elite">
+            <h2>
+                👑 Plan Elite 👑
+                <span class="toggle-icon">−</span>
+            </h2>
+            <div class="content">
+                <p><strong>Costo:</strong> $5 semanal</p>
+                <p><strong>Incluye:</strong></p>
+                <ul>
+                    <li>2 combinaciones de 3 jugadas</li>
+                    <li>Deportes: MLB, HOCKEY, BASKET, FUTBOL</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="plan-diamante">
+            <h2>
+                💎 Plan Diamante 💎
+                <span class="toggle-icon">−</span>
+            </h2>
+            <div class="content">
+                <p><strong>Costo:</strong> $10 por 15 días</p>
+                <p><strong>Incluye:</strong></p>
+                <ul>
+                    <li>3 combinaciones de 3 jugadas</li>
+                    <li>Directa del día</li>
+                    <li>Dupleta del día</li>
+                    <li>Hembra del día</li>
+                    <li>Resultado estimado de cuanto puede quedar cada encuentro</li>
+                    <li>Asesoramiento personalizado para resolver cualquier duda sobre tus jugadas</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="plan-premium">
+            <h2>
+                🏅 Plan Premium 🏅
+                <span class="toggle-icon">−</span>
+            </h2>
+            <div class="content">
+                <p><strong>Costo:</strong> $4 semanal</p>
+                <p><strong>Incluye:</strong></p>
+                <ul>
+                    <li>Deporte de tu elección entre MLB, Hockey, Baloncesto, Futbol</li>
+                    <li>Tres jugadas diarias durante una semana</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="payment-contact">
+            <h2 style="color:#f9d342; user-select:none;">✨ Métodos de pago ✨</h2>
+            <div class="payment-methods">
+                <div class="payment-method" data-method="zinli">Zinli</div>
+                <div class="payment-method" data-method="zelle">Zelle</div>
+                <div class="payment-method" data-method="binance">Binance</div>
+                <div class="payment-method" data-method="pesos-mexicanos">Pesos Mexicanos</div>
+                <div class="payment-method" data-method="pago-movil">Pago Móvil</div>
+            </div>
+            <div id="zinli" class="payment-info">
+                <strong>Zinli</strong><br>
+                Correo: ramon.pestana.2002@gmail.com<br>
+                Monto mínimo: $10
+            </div>
+            <div id="zelle" class="payment-info">
+                <strong>Zelle</strong><br>
+                Correo: fatimacancino8@gmail.com<br>
+                Monto mínimo: $20
+            </div>
+            <div id="binance" class="payment-info">
+                <strong>Binance</strong><br>
+                Correo: ramon.pestana.2002@gmail.com<br>
+                Monto mínimo: $5
+            </div>
+            <div id="pesos-mexicanos" class="payment-info">
+                <strong>Pesos Mexicanos</strong><br>
+                Monto mínimo: $500 pesos<br>
+                Consultar datos al WhatsApp
+            </div>
+            <div id="pago-movil" class="payment-info">
+                <strong>Pago Móvil</strong><br>
+                Cédula: 29911510<br>
+                Teléfono: 04144053136 (Venezuela)
+            </div>
+            <p><strong>Tasa para realizar el pago:</strong> 187 Bs</p>
+            <p><strong>Enviar comprobante únicamente al número:</strong></p>
+            <p style="font-size:1.3em; font-weight:bold;">+58 412 0387185</p>
+        </section>
+
+        <section class="pick-del-dia">
+            <h2 style="color:#f9d342; user-select:none;">PICK DEL DÍA</h2>
+            <p><a href="https://t.me/mlbpredicciones" target="_blank" rel="noopener noreferrer">https://t.me/mlbpredicciones</a></p>
+        </section>
+
+    </section>
+
+    <section id="victory-section">
+        <h2>Nuestra victoria de ayer</h2>
+        <p>
+✅⚾️ San Diego vs Colorado  
+Predicción: San Diego gana
+
+✅⚾️ Seattle vs Angels  
+Predicción: Seattle gana
+
+✅⚾️ Houston vs Toronto  
+Predicción: Baja -10.5 entre los dos  
+Cuota total 3.22
+        </p>
+    </section>
+
+    <section id="combination-section">
+        <h2>Combinación de hoy</h2>
+        <p>
+📍 Alemania  
+⚽️ Leverkusen vs Frankfurt 2:30pm  
+Predicción: Elite y Diamante
+
+📍 España  
+⚽️ Sevilla vs Elche 2:45pm  
+Predicción: Elite y Diamante
+
+📍 Francia  
+⚽️ Marsella vs Lorient 2:45pm  
+Predicción: Elite y Diamante  
+Cuota total 4.18
+
+⚾️ Kansas vs Phillies 6:45pm  
+Predicción: Premium, Elite y Diamante
+
+⚾️ Milwaukee vs San Luis 8:10pm  
+Predicción: Premium, Elite y Diamante
+
+⚾️ Minnesota vs Arizona 8:10pm  
+Predicción: Premium, Elite y Diamante  
+Cuota total 3.20
+
+⚾️ Piratas vs Nationals 6:45pm  
+Predicción: Diamante
+
+⚾️ Tampa vs Cubs 2:10pm  
+Predicción: Diamante
+
+⚾️ Miami vs Detroit 7:10pm  
+Predicción: Diamante  
+Cuota total 3.10
+        </p>
+    </section>
+
+    <section class="highlight-link">
+      <p>Realiza tus jugadas en la mejor casa de apuestas del país:</p>
+      <p><a href="https://www.juegaenlinea.com?ref=ganac0nkings" target="_blank" rel="noopener noreferrer">www.juegaenlinea.com?ref=ganac0nkings</a></p>
+    </section>
+
+    <script>
+        // Make sections collapsible by clicking the header
+        document.querySelectorAll('#plans-section > section').forEach(section => {
+            const header = section.querySelector('h2');
+            const content = section.querySelector('.content');
+            const toggleIcon = header.querySelector('.toggle-icon');
+
+            if (!content) return; // skip sections without content (like payment-contact)
+
+            header.addEventListener('click', () => {
+                if (section.classList.contains('collapsed')) {
+                    section.classList.remove('collapsed');
+                    toggleIcon.textContent = '−';
+                } else {
+                    section.classList.add('collapsed');
+                    toggleIcon.textContent = '+';
+                }
+            });
+        });
+
+        // Navigation menu functionality
+        const navItems = document.querySelectorAll('nav ul li');
+        const plansSection = document.getElementById('plans-section');
+        const victorySection = document.getElementById('victory-section');
+        const combinationSection = document.getElementById('combination-section');
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                if(item.dataset.target === 'plans-section') {
+                    plansSection.style.display = 'block';
+                    victorySection.style.display = 'none';
+                    combinationSection.style.display = 'none';
+                } else if(item.dataset.target === 'victory-section') {
+                    plansSection.style.display = 'none';
+                    victorySection.style.display = 'block';
+                    combinationSection.style.display = 'none';
+                } else if(item.dataset.target === 'combination-section') {
+                    plansSection.style.display = 'none';
+                    victorySection.style.display = 'none';
+                    combinationSection.style.display = 'block';
+                }
+            });
+        });
+
+        // Payment methods toggle
+        const paymentMethods = document.querySelectorAll('.payment-method');
+        const paymentInfos = document.querySelectorAll('.payment-info');
+
+        paymentMethods.forEach(method => {
+            method.addEventListener('click', () => {
+                const targetId = method.getAttribute('data-method');
+                paymentInfos.forEach(info => {
+                    if(info.id === targetId) {
+                        info.classList.toggle('active');
+                    } else {
+                        info.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
